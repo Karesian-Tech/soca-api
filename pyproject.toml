@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "rea-api"
+version = "0.1.0"
+description = ""
+authors = ["syauqylei <syauqilenterano@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.110.0"
+uvicorn = "^0.27.1"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.27"}
+alembic = "^1.13.1"
+pydantic-settings = "^2.2.1"
+asyncpg = "^0.29.0"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.2"
+pytest-asyncio = "^0.23.5"
+
+
+[tool.poetry.group.dev.dependencies]
+jupyter = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
