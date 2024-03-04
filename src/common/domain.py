@@ -1,4 +1,5 @@
 from datetime import datetime
+from pydantic import BaseModel
 
 
 class CommonDate:
@@ -6,6 +7,10 @@ class CommonDate:
     updated_at: datetime
 
 
-class CommonField(CommonDate):
+class CommonActionBy:
     created_by: str
     updated_by: str
+
+
+class Domain(BaseModel, CommonDate):
+    id: str

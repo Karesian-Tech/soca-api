@@ -1,20 +1,20 @@
-import os
 from typing import Optional
-from pydantic import PostgresDsn
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class AppSettings(BaseSettings):
-    DB_NAME: str
-    DB_PORT: str
-    DB_HOST: str
-    DB_USER: str
-    DB_PASS: str
-    DB_TEST_NAME: str
-    DB_TEST_USER: str
-    DB_TEST_PASS: str
-    DB_TEST_HOST: str
-    DB_TEST_PORT: str
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
+    DB_NAME: Optional[str] = None
+    DB_PORT: Optional[str] = None
+    DB_HOST: Optional[str] = None
+    DB_USER: Optional[str] = None
+    DB_PASS: Optional[str] = None
+    DB_TEST_NAME: Optional[str] = None
+    DB_TEST_USER: Optional[str] = None
+    DB_TEST_PASS: Optional[str] = None
+    DB_TEST_HOST: Optional[str] = None
+    DB_TEST_PORT: Optional[str] = None
 
     def _get_postgres_url(self, db_name, db_user, db_pass, db_host, db_port):
         return f"postgresql+asyncpg://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
@@ -36,10 +36,6 @@ class AppSettings(BaseSettings):
             self.DB_HOST,
             self.DB_PORT,
         )
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
 
 
 settings = AppSettings()

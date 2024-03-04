@@ -1,11 +1,17 @@
-import pytest
+from typing import Generator
+import asyncio
 import pytest_asyncio
 
-from src.common.models.dataset import Dataset
-import sqlalchemy as sa
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from src.common.config import settings
 from src.common.database import Base
+
+
+@pytest_asyncio.fixture(scope="session")
+def event_loop() -> Generator:
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
 
 
 @pytest_asyncio.fixture(scope="session")
@@ -15,7 +21,7 @@ def engine():
     eng.sync_engine.dispose()
 
 
-@pytest_asyncio.fixture()
+@pytest_asyncio.fixture
 async def create(engine):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -28,16 +34,3 @@ async def create(engine):
 async def session(engine, create):
     async with AsyncSession(engine) as sess:
         yield sess
-
-
-@pytest.mark.asyncio
-async def test_one(session: AsyncSession):
-    data = Dataset(name="ss", description="asds", items=[])
-    session.add(data)
-    await session.commit()
-    q = await session.scalars(sa.select(Dataset))
-    ret = q.all()
-    o = ret[0]
-    print(o.name)
-
-    assert len(ret) == 1

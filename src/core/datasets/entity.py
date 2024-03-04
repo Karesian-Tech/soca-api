@@ -1,34 +1,35 @@
-from dataclasses import dataclass
 import hashlib
 import random
 from typing import List, Optional
-from src.common.base.domain import DomainModel
-from src.common.base.entities import DatasetItem
-from src.common.domains.datasets.exceptions import DatasetItemsIsEmpty
+
+from pydantic import BaseModel, ConfigDict
+from src.common.entities import DatasetItem
+from src.core.datasets.exceptions import DatasetItemsIsEmpty
+from src.common.domain import Domain
 
 
-class Dataset(DomainModel):
+class Dataset(Domain):
     name: str
     description: str
-    items: List[DatasetItem]
+    items: Optional[List[DatasetItem]] = None
 
-    def __init__(
-        self, id: str, name: str, description: str, items: List[DatasetItem] = []
-    ) -> None:
-        super().__init__(id)
-        self.name = name
-        self.description = description
-        self.items = items
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
 
     def _gen_item_hash(self, item: DatasetItem) -> str:
         hash = hashlib.md5(item.id.encode())
         hash.update(random.getrandbits(32).to_bytes(5, "big"))
         return hash.hexdigest()
 
-    def remove_items(self, list_hash: List[str]) -> None:
-        if len(self.items) == 0:
-            raise DatasetItemsIsEmpty
+    def _item_empty(self) -> bool:
+        if not self.items:
+            return False
+        return len(self.items) == 0
 
+    def remove_items(self, list_hash: List[str]) -> None:
+        if self._item_empty():
+            raise DatasetItemsIsEmpty
         self.items = [item for item in self.items if item.hash not in list_hash]
 
     def _get_items_hashed(self, items: List[DatasetItem]) -> List[DatasetItem]:
@@ -38,3 +39,13 @@ class Dataset(DomainModel):
 
     def add_items(self, items: List[DatasetItem]) -> None:
         self.items += self._get_items_hashed(items)
+
+
+class DatasetCreate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    items: Optional[List[DatasetItem]] = None
+
+
+class DatasetUpdate(DatasetCreate):
+    id: Optional[str] = None

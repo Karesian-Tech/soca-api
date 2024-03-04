@@ -1,0 +1,7 @@
+test-datasets-domain:
+	echo "Testing Datasets Domains" && \
+		poetry run pytest src/common/domains
+test-domains:
+	test-datasets-domain
+
+

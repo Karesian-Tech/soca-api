@@ -1,10 +1,10 @@
 import hashlib
 import random
 import pytest
-from src.common.base.entities import DatasetItem
+from src.common.entities import DatasetItem
 
-from src.common.domains.datasets.entity import Dataset
-from src.common.domains.datasets.exceptions import DatasetItemsIsEmpty
+from src.core.datasets.entity import Dataset
+from src.core.datasets.exceptions import DatasetItemsIsEmpty
 from src.common.utils import generateUUIDv4
 
 

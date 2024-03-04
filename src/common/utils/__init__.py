@@ -2,6 +2,13 @@ import hashlib
 import random
 import uuid
 
+from .repository_utils import Utils as _RepositoryUtils
+from .model_orm_utils import Utils as _ModelOrmUtils
+
+
+RepositoryUtils = _RepositoryUtils
+ModelOrmUtils = _ModelOrmUtils
+
 
 def generateUUIDv4() -> str:
     return uuid.uuid4().hex
