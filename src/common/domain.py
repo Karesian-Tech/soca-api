@@ -1,4 +1,5 @@
 from datetime import datetime
+import uuid
 from pydantic import BaseModel
 
 
@@ -13,4 +14,4 @@ class CommonActionBy:
 
 
 class Domain(BaseModel, CommonDate):
-    id: str
+    id: uuid.UUID

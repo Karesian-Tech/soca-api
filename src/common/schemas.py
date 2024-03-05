@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 from typing import Generic, List, TypeVar
 from pydantic import BaseModel
 
@@ -19,10 +20,17 @@ class CommonDate:
     updated_at: datetime
 
 
+class OrderType(str, Enum):
+    DESC = "desc"
+    ASC = "asc"
+
+
 class Pagination:
-    limit: int
-    offset: int
+    page: int
+    per_page: int
 
 
-class RequestBody(BaseModel, Pagination, CommonDate):
-    pass
+class RequestBody(CommonDate):
+    page: Pagination
+    order_by: str
+    order: OrderType
