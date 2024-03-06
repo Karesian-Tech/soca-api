@@ -1,9 +1,9 @@
 from typing import Dict, Generic, List, Sequence, Tuple
-from sqlalchemy import HasSuffixes, Select, asc, desc, select
+from sqlalchemy import Select, asc, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.common.database import Base
-from src.common.types import FilterDateFromTo, ModelT
+from src.common.types import ModelT
 from src.common.schemas import OrderType
 
 

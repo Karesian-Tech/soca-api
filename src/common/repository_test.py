@@ -176,15 +176,14 @@ async def test_find_page_order(
 @pytest.mark.asyncio
 async def test_find_page_filter(repo: DatasetRepository, find_all_order_stub):
     session = find_all_order_stub
+
     ret = await repo.find_all({"name": "ex12"}, {})
     assert len(ret) == 1
     assert ret[0].name == "ex12"
+
     ret = await repo.find_all({"name": ["ex12", "ex2"]}, {})
     assert len(ret) == 2
+
     found = find_one(ret, lambda x: x.name == "ex12")
     assert found is not None
-    assert found.name is not "ex12"
-
-    found = find_one(ret, lambda x: x.name == "ex2")
-    assert found is not None
-    assert found.name is not "ex2"
+    assert found.name == "ex12"

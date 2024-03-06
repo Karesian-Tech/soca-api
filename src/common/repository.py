@@ -6,8 +6,8 @@ from src.common.types import ModelT, DomainT
 from src.common.utils import RepositoryUtils
 
 
-class BaseRepository(Generic[ModelT, DomainT]):
-    """BaseRepository provides a basic CRUD operation abstraction."""
+class Repository(Generic[ModelT, DomainT]):
+    """Repository provides a basic CRUD operation abstraction."""
 
     model: type[ModelT]
     domain: type[DomainT]

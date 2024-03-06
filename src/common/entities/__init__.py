@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel, ConfigDict
 
 
-class DatasetItem(BaseModel):
+class DataItem(BaseModel):
     id: str
     item_type: str
     url: str

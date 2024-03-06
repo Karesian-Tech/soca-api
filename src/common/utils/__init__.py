@@ -25,3 +25,11 @@ def get_hash(id: str) -> str:
 
 def find_one(iterable: Iterable[T], func):
     return next(item for item in iterable if func)
+
+
+# request preprocessor to orm opts
+def request_preprocessor(req):
+    def convert_to_orm_opts():
+        pass
+
+    return convert_to_orm_opts(func)
