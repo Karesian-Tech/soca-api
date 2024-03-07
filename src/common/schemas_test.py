@@ -65,6 +65,13 @@ def test_request_body_deserialization():
     assert validation.created_at.lte < datetime.now()  # type: ignore
 
 
+def assert_dict_value_none(dump: Dict):
+    for k, v in dump.items():
+        if not v:
+            return False
+    return True
+
+
 def test_request_body_serialization():
     schema = MockSchema()
 
@@ -77,5 +84,12 @@ def test_request_body_serialization():
 
     schema = MockSchema(name=["ex", "ex2"])
 
-    dump = schema.model_dump()
+    dump = schema.model_dump(exclude_none=True)
     assert len(dump.get("name")) == 2  # type: ignore
+    assert assert_dict_value_none(dump)
+
+    schema = MockSchema(created_at=FilterObject(lte=datetime))
+
+    dump = schema.model_dump(exclude_none=True)
+    assert assert_dict_value_none(dump)
+    assert dump.get("created_at").get("lte") is datetime  # type: ignore.

@@ -8,4 +8,4 @@ class MockRepository(Repository):
         pass
 
     async def find_all(self, filter: Dict, pagination: Dict):
-        return []
+        return [1]
